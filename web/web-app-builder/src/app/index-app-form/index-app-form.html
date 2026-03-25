@@ -1,0 +1,27 @@
+
+<header-component></header-component>
+
+<div class="container">
+  <div style="margin-top: 85px;"></div>
+  <div class="row gx-4 gx-lg-5">
+    @for(option of appOptions; track option.title) {
+      <div class="col-md-4 mb-5">
+          <div class="card h-100">
+              <div class="card-body">
+                  <h3 class="card-title">{{option.title}}</h3>
+                  <p class="card-text">
+                      {{option.text}}
+                  </p>
+              </div>
+              <div class="card-footer">
+                <a [routerLink]="[option.link]">
+                  <p-button [icon]="option.icon"
+                            [label]="option.btLabel"
+                            [severity]="btSeverity"/>
+                </a>
+              </div>
+          </div>
+      </div>
+    }
+  </div>
+</div>

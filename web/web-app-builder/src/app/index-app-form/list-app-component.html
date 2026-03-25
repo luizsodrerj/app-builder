@@ -1,0 +1,24 @@
+<header-component></header-component>
+
+<div class="container">
+  <div class="row gx-4 gx-lg-5">
+      <div>
+        <h4>Lista de Aplicações</h4>
+      </div>
+      <ul style="margin-top: 25px;">
+        @for(app of apps; track app.appId) {
+            <li style="font-weight: bold;">
+              <p-button
+                  icon="pi pi-sitemap"
+                  [rounded]="true"
+                  severity="success"
+                  [outlined]="true" />
+              <a [routerLink]="['/list-form', app.appId]"
+                 style="margin-left: 7px;">
+                {{app.name}}
+              </a>
+            </li>
+        }
+      </ul>
+  </div>
+</div>

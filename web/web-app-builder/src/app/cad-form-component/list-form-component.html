@@ -1,0 +1,23 @@
+<header-component></header-component>
+
+<div class="container">
+  <div class="row gx-4 gx-lg-5">
+      <div>
+        <h4>Lista de Cadastros e Formulários</h4>
+      </div>
+      <ul style="margin-top: 25px;">
+        @for(form of forms; track form.id) {
+            <li style="font-weight: bold;">
+              <p-button
+                  icon="pi pi-file-edit"
+                  [rounded]="true"
+                  severity="success"
+                  [outlined]="true" />
+              <a href="#" onclick="return false" style="margin-left: 7px;">
+                {{form.nome}}
+              </a>
+            </li>
+        }
+      </ul>
+  </div>
+</div>

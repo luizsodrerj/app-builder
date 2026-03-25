@@ -1,0 +1,120 @@
+<header-component></header-component>
+
+<div class="container">
+  <form>
+    <div class="row">
+      <div class="col-5" style="width: 36%;">
+        <div class="mb-3">
+          <label for="nome" class="form-label">
+              Nome da Formulário
+          </label>
+          <div>
+              <input
+                type="text"
+                [(ngModel)]="form.nome"
+                style="width: 350px;"
+                pInputText
+                name="nome"
+                id="nome"/>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <p-button
+                  label="Salvar"
+                  [severity]="btSeverity" />
+            </div>
+            <div class="col-9" style="text-align: center;">
+                <p-button
+                  label="Adicionar um Campo no Formulário"
+                  (onClick)="addField()"
+                  [hidden]="btAddHidden"
+                  [severity]="btSeverity" />
+                <p-button
+                  label="Alterar Dados do Campo"
+                  [hidden]="btUpdateHidden"
+                  (onClick)="updateField()"
+                  [severity]="'success'" />
+                <p-button
+                  label="Cancelar"
+                  [hidden]="btUpdateHidden"
+                  [style]="{'margin-left': '20px'}"
+                  (onClick)="cancelUpdateField()"
+                  [severity]="'warn'" />
+            </div>
+        </div>
+      </div> <!-- col-5 -->
+      <div class="col-6">
+          <div class="mb-3">
+            <label for="nome" class="form-label">
+                Nome do Campo
+            </label>
+            <div>
+                <input
+                  type="text"
+                  [(ngModel)]="field.name"
+                  style="width: 250px;"
+                  name="fieldName"
+                  id="fieldName"
+                  pInputText/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="fieldLabel" class="form-label">
+                Label do Campo
+            </label>
+            <div>
+                <input
+                  type="text"
+                  [(ngModel)]="field.label"
+                  style="width: 250px;"
+                  name="fieldLabel"
+                  id="fieldLabel"
+                  pInputText/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="fieldType" class="form-label">
+                Tipo do Campo
+            </label>
+            <div>
+                <select (change)="onChangeType(type.value)"
+                        [(ngModel)]="typeSelectedValue")
+                        #type
+                        name="type"
+                        id="type">
+                    <option [value]="0">Selecione uma Opção</option>
+                    @for(item of types; track item.id) {
+                        <option [value]="item.id">
+                            {{item.typeName}}
+                        </option>
+                    }
+                </select>
+            </div>
+          </div>
+      </div> <!-- col-6 -->
+    </div> <!-- row -->
+    <div style="font-weight: bold; margin-bottom: 9px;">
+        <span>Preview do Campo</span>
+    </div>
+    <div class="mb-3">
+      <label for="f" class="form-label">
+          {{field.label}}
+      </label>
+      <div>
+          <input
+            type="text"
+            style="width: 280px;"
+            [hidden]="prevTypeHidden"
+            pInputText
+            id="f"/>
+      </div>
+    </div>
+
+    <cad-form-child-component
+        (childEvent)="onChildRowSelect($event)">
+    </cad-form-child-component>
+
+  </form>
+</div>
+

@@ -14,6 +14,11 @@ export class AppService {
     constructor(private http: HttpClient) { }
 
 
+    saveAppAndForm(app: any): Observable<any> {
+        let endpoint = `${this.API}/new-app`;
+        return this.http.post<any>(endpoint, app);
+    }
+
     getForms(appId: string): Observable<any> {
         let endpoint = `${this.API}/forms?appId=${appId}`;
         return this.http.get<any>(endpoint);

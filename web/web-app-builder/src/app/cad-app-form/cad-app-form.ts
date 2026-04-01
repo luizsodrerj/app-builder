@@ -22,7 +22,7 @@ export class CadAppForm extends BaseComponent {
 
     app = {
       nome: '',
-      id: ''
+      id: '0'
     }
 
 

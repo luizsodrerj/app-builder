@@ -6,7 +6,7 @@
       <div class="col-5" style="width: 36%;">
         <div class="mb-3">
           <label for="nome" class="form-label">
-              Nome da Formulário
+              Nome do Formulário
           </label>
           <div>
               <input
@@ -21,6 +21,7 @@
         <div class="row">
             <div class="col-2">
                 <p-button
+                  (onClick)="onClickBtSalvar()"
                   label="Salvar"
                   [severity]="btSeverity" />
             </div>
@@ -45,61 +46,17 @@
         </div>
       </div> <!-- col-5 -->
       <div class="col-6">
-          <div class="mb-3">
-            <label for="nome" class="form-label">
-                Nome do Campo
-            </label>
-            <div>
-                <input
-                  type="text"
-                  [(ngModel)]="field.name"
-                  style="width: 250px;"
-                  name="fieldName"
-                  id="fieldName"
-                  pInputText/>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="fieldLabel" class="form-label">
-                Label do Campo
-            </label>
-            <div>
-                <input
-                  type="text"
-                  [(ngModel)]="field.label"
-                  style="width: 250px;"
-                  name="fieldLabel"
-                  id="fieldLabel"
-                  pInputText/>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="fieldType" class="form-label">
-                Tipo do Campo
-            </label>
-            <div>
-                <select (change)="onChangeType(type.value)"
-                        [(ngModel)]="typeSelectedValue")
-                        #type
-                        name="type"
-                        id="type">
-                    <option [value]="0">Selecione uma Opção</option>
-                    @for(item of types; track item.id) {
-                        <option [value]="item.id">
-                            {{item.typeName}}
-                        </option>
-                    }
-                </select>
-            </div>
-          </div>
-      </div> <!-- col-6 -->
+          <field-child-form-component
+              (onChangeChildType)="onChangeType($event)"
+              [(labelValue)]="childLabelValue"/>
+      </div>
     </div> <!-- row -->
     <div style="font-weight: bold; margin-bottom: 9px;">
         <span>Preview do Campo</span>
     </div>
     <div class="mb-3">
       <label for="f" class="form-label">
-          {{field.label}}
+          {{ childLabelValue() }}
       </label>
       <div>
           <input
@@ -112,8 +69,10 @@
     </div>
 
     <cad-form-child-component
-        (childEvent)="onChildRowSelect($event)">
-    </cad-form-child-component>
+        (childEvent)="onChildRowSelect($event)"/>
+
+    <cadform-dialogs-child-component
+        (onClickOk)="onClickChildBtOk($event)"/>
 
   </form>
 </div>

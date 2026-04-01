@@ -1,20 +1,27 @@
-import { Component, OnInit, ChangeDetectorRef, Inject, ViewChild } from '@angular/core';
+import { model } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, inject, signal } from '@angular/core';
 import { HeaderComponent } from '../header-component/header-component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { BaseComponent } from '../base/base-component';
 import { CadFormChildComponent } from './cad-form-child-component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CadFormDialogsComponent } from './cadform-dialogs-component';
+import { FieldChildFormComponent } from './field-child-form-component';
+import { AppService } from '../service/app-service';
 
 @Component({
   selector: 'cad-form',
   imports: [
     InputTextModule, HeaderComponent,
     FormsModule, ButtonModule,
-    CadFormChildComponent
-],
+    CadFormChildComponent, CadFormDialogsComponent,
+    FieldChildFormComponent
+  ],
   templateUrl: './cad-form-component.html',
   styleUrl: './cad-form-component.css',
+  providers: [AppService]
 })
 export class CadFormComponent extends BaseComponent implements OnInit {
 
@@ -25,47 +32,96 @@ export class CadFormComponent extends BaseComponent implements OnInit {
     field = {
         name: '',
         label: '',
+        dataTypeId: '',
         dataType: '',
         typeId: '',
         type: '',
         id: ''
     }
-    fieldType = {
-        typeName: '',
-        id: ''
-    }
-    types:any[] = []
     prevTypeHidden: boolean = true
     btUpdateHidden: boolean = true
     btAddHidden: boolean = false
-    typeSelectedValue = ''
+    appName = ''
+    appId = ''
 
+    @ViewChild(FieldChildFormComponent) fieldChildForm!: FieldChildFormComponent
     @ViewChild(CadFormChildComponent) childForm!: CadFormChildComponent
+    @ViewChild(CadFormDialogsComponent) dialogs!: CadFormDialogsComponent
 
+    private service: AppService = inject(AppService)
+    private cdr: ChangeDetectorRef  = inject(ChangeDetectorRef)
+    private route: ActivatedRoute   = inject(ActivatedRoute)
+    private router: Router = inject(Router)
+
+    childLabelValue = signal('')
+
+
+    onClickBtSalvar() {
+        let app     = this.createApp()
+        let fields  = this.childForm.fields
+        fields.forEach((field:any, index:number) => {
+            app.forms[0].fields.push({
+              "name"  	  : field.name,
+              "dataType" 	: field.dataTypeId,
+              "label" 	  : field.label,
+              "fieldType"	: field.typeId,
+              "formatType": ""
+            })
+        })
+        this.service.saveAppAndForm(app).pipe().subscribe({
+            next: (data) => {
+              this.dialogs.dlgConfCriaFormVisible = true
+              this.cdr.detectChanges()
+            }
+        })
+    }
+
+    onClickChildBtOk(childEvent: any) {
+        this.dialogs.dlgConfCriaFormVisible = false
+        this.router.navigate(['/index-app-form']);
+    }
+
+    createApp() {
+        let fields: any[] = []
+        return {
+            "name": this.appName,
+            "forms": [
+              {
+                "label": this.form.nome,
+                "nome" : this.form.nome,
+	              "fields" : fields
+              }
+            ]
+        }
+    }
 
     onChildRowSelect(childEvent: any) {
         let selectedField = childEvent
-        this.typeSelectedValue = selectedField.typeId
-        this.field.name     = selectedField.name
-        this.field.label    = selectedField.label
-        this.field.dataType = selectedField.dataType
-        this.field.typeId   = selectedField.typeId
-        this.field.type     = selectedField.type
+        this.fieldChildForm.typeSelectedValue = selectedField.typeId
+        this.fieldChildForm.field.name        = selectedField.name
+        this.fieldChildForm.field.label       = selectedField.label
+        this.fieldChildForm.field.dataType    = selectedField.dataType
+        this.fieldChildForm.field.typeId      = selectedField.typeId
+        this.fieldChildForm.field.type        = selectedField.type
+        this.fieldChildForm.labelValue.set(selectedField.label)
         this.prevTypeHidden = false
         this.btUpdateHidden = false
         this.btAddHidden = true
     }
 
     updateField() {
-        this.childForm.updateField(this.field)
+        this.childForm.updateField(this.fieldChildForm.field)
         this.btUpdateHidden = true
         this.btAddHidden = false
         this.reset()
     }
 
     addField() {
-        this.field.dataType = 'Texto'
-        this.childForm.addField(this.field)
+      // trocar para Combo de tipos de dados
+        this.fieldChildForm.field.dataTypeId = this.fieldChildForm.field.typeId
+        this.fieldChildForm.field.dataType = 'Texto'
+
+        this.childForm.addField(this.fieldChildForm.field)
         this.reset()
     }
 
@@ -76,40 +132,28 @@ export class CadFormComponent extends BaseComponent implements OnInit {
     }
 
     reset() {
-        this.typeSelectedValue = '0'
+        this.fieldChildForm.typeSelectedValue = '0'
+        this.fieldChildForm.field.name = ''
+        this.fieldChildForm.field.type = ''
+        this.fieldChildForm.field.typeId = ''
+        this.fieldChildForm.field.label = ''
+        this.fieldChildForm.labelValue.set('')
         this.prevTypeHidden = true
-        this.field.name = ''
-        this.field.type = ''
-        this.field.typeId = ''
-        this.field.label = ''
     }
 
     onChangeType(value: any) {
-        this.fieldType.id = value
         this.prevTypeHidden = !(value != '0')
-        this.field.type = value != '0' ? this.getFieldTypeName(value): ''
-        this.field.typeId = value != '0' ? value: ''
     }
 
-    getFieldTypeName(id: string): string {
-        let typeName = ''
-        this.types.forEach((type:any, index:number) => {
-            if (type.id == id) {
-                typeName = type.typeName
-            }
+    constructor() {
+        super()
+        this.route.params.subscribe(params => {
+            this.appName = params['appName']
+            this.appId   = params['appId']
         });
-        return typeName;
-    }
-
-    constructor(private cdr: ChangeDetectorRef) {
-      super()
     }
 
     ngOnInit(): void {
-        this.types.push({
-            typeName: 'Campo de Texto',
-            id: '1'
-        })
     }
 
 

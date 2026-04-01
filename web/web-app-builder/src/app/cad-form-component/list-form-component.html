@@ -8,13 +8,16 @@
       <ul style="margin-top: 25px;">
         @for(form of forms; track form.id) {
             <li style="font-weight: bold;">
-              <p-button
-                  icon="pi pi-file-edit"
-                  [rounded]="true"
-                  severity="success"
-                  [outlined]="true" />
-              <a href="#" onclick="return false" style="margin-left: 7px;">
-                {{form.nome}}
+              <a [routerLink]="['/cad-data-form', form.id]">
+                  <p-button
+                    icon="pi pi-file-edit"
+                    [rounded]="true"
+                    severity="success"
+                    [outlined]="true" />
+              </a>
+              <a [routerLink]="['/cad-data-form', form.id]"
+                 style="margin-left: 7px;">
+                  {{form.nome}}
               </a>
             </li>
         }

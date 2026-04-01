@@ -37,7 +37,6 @@ public class AppController {
         return new ResponseEntity<>(appDto,HttpStatus.CREATED);
     }
 
-
     @GetMapping("/forms")
     public List<FormDTO> getForms(
                 @RequestParam("appId")

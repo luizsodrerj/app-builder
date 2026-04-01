@@ -1,0 +1,43 @@
+<header-component></header-component>
+
+<div class="container" style="margin-left: 15%;">
+  <h4>{{form.label}}</h4>
+  <div style="margin-bottom: 20px;"></div>
+  <form>
+    @for(field of fields; track field.id) {
+      <div class="mb-3">
+        <label for="nome" class="form-label">
+            {{fields[$index].label}}
+        </label>
+        <div>
+            <input
+              type="text"
+              [(ngModel)]="fields[$index].value"
+              style="width: 250px;"
+              name="f{{fields[$index].id}}"
+              id="f{{fields[$index].id}}"
+              pInputText/>
+        </div>
+      </div>
+    }
+    <div>
+        <p-table
+          [value]="formRegisters"
+          [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template #header>
+            <tr>
+              @for(field of fields; track field.id) {
+                <th>{{fields[$index].label}}</th>
+              }
+            </tr>
+          </ng-template>
+          <ng-template #body let-register>
+            <tr>
+              <td></td>
+            </tr>
+          </ng-template>
+        </p-table>
+    </div>
+
+  </form>
+</div>

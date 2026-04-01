@@ -1,0 +1,16 @@
+
+<p-dialog header="Cadastro de Formulário"
+          [(visible)]="dlgConfCriaFormVisible"
+          [style]="{ width: '25rem' }"
+          [modal]="true">
+    <div>
+        <span class="p-text-secondary block mb-8">
+            Formulário criado com sucesso!
+        </span>
+    </div>
+    <div style="text-align:right; margin-top: 15px;">
+        <p-button
+            (click)="onClickBtOk()"
+            label="OK" />
+    </div>
+</p-dialog>

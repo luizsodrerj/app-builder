@@ -32,6 +32,7 @@ export class CadFormChildComponent {
         this.fields.push({
           name: 	 field.name,
           label: 	 field.label,
+          dataTypeId: field.dataTypeId,
           dataType:field.dataType,
           typeId:  field.typeId,
           type: 	 field.type

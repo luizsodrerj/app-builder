@@ -1,0 +1,11 @@
+
+.flexDiv {
+  display:flex;
+  gap:5px;
+}
+
+.childDiv {
+  text-align: center;
+  width: 8%;
+}
+

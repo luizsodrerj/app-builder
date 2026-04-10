@@ -14,6 +14,16 @@ export class FormService {
     constructor(private http: HttpClient) { }
 
 
+    persistRegister(register: any): Observable<any> {
+        let endpoint = `${this.API}/new-register`;
+        return this.http.post<any>(endpoint, register);
+    }
+
+    getLastRegisters(formId: string): Observable<any> {
+        let endpoint = `${this.API}/last-registers/${formId}`;
+        return this.http.get<any>(endpoint);
+    }
+
     getForm(id: string): Observable<any> {
         let endpoint = `${this.API}/${id}`;
         return this.http.get<any>(endpoint);

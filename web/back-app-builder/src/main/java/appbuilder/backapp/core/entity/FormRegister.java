@@ -5,6 +5,8 @@ import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,7 +26,7 @@ public class FormRegister implements Serializable {
 
 	//bi-directional many-to-one association to FieldValue
 	@OneToMany(mappedBy="formRegister", fetch = FetchType.LAZY)
-	private List<FieldValue> fieldValues;
+	private List<FieldValue> fieldValues = new ArrayList<>();
 
 	//bi-directional many-to-one association to Form
 	@ManyToOne

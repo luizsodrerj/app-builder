@@ -6,34 +6,56 @@
   <form>
     @for(field of fields; track field.id) {
       <div class="mb-3">
-        <label for="nome" class="form-label">
+        <label for="f{{fields[$index].id}}" class="form-label">
             {{fields[$index].label}}
         </label>
         <div>
             <input
               type="text"
               [(ngModel)]="fields[$index].value"
-              style="width: 250px;"
+              style="width: 450px;"
               name="f{{fields[$index].id}}"
               id="f{{fields[$index].id}}"
               pInputText/>
         </div>
       </div>
     }
-    <div>
+    <div class="flexDiv">
+      <div class="childDiv">
+          <p-button
+            (onClick)="onClickBtSalvar()"
+            [severity]="btSeverity"
+            label="Salvar"/>
+      </div>
+      <div class="childDiv">
+          <p-button
+            (onClick)="onClickBtPesquisar()"
+            [severity]="btSeverity"
+            label="Pesquisar"/>
+      </div>
+      <div class="childDiv">
+          <p-button
+            (onClick)="onClickBtLimpar()"
+            [severity]="btSeverity"
+            label="Limpar"/>
+      </div>
+    </div>
+    <div style="margin-top: 25px;">
         <p-table
           [value]="formRegisters"
           [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template #header>
             <tr>
               @for(field of fields; track field.id) {
-                <th>{{fields[$index].label}}</th>
+                <th>{{field.label}}</th>
               }
             </tr>
           </ng-template>
           <ng-template #body let-register>
             <tr>
-              <td></td>
+              @for(fieldValue of register.values; track fieldValue.id) {
+                <td>{{fieldValue.val}}</td>
+              }
             </tr>
           </ng-template>
         </p-table>
@@ -41,3 +63,18 @@
 
   </form>
 </div>
+<p-dialog header="Dados do Formulário"
+          [(visible)]="dlgFormDataVisible"
+          [style]="{ width: '25rem' }"
+          [modal]="true">
+    <div>
+        <span class="p-text-secondary block mb-8">
+            Dados salvos com sucesso!
+        </span>
+    </div>
+    <div style="text-align:right; margin-top: 15px;">
+        <p-button
+          (click)="dlgFormDataVisible = false"
+          label="OK" />
+    </div>
+</p-dialog>

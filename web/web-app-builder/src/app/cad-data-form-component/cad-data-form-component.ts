@@ -50,6 +50,7 @@ export class CadDataFormComponent extends BaseComponent implements OnInit {
         this.service.persistRegister(register).pipe().subscribe({
             next: (data) => {
               this.dlgFormDataVisible = true
+              this.getLastRegisters()
               this.reset()
               this.cdr.detectChanges()
             }
@@ -57,32 +58,51 @@ export class CadDataFormComponent extends BaseComponent implements OnInit {
     }
 
     onClickBtPesquisar() {
-        this.getLastRegisters()
-    }
-
-    getLastRegisters() {
-        this.service.getLastRegisters(this.form.id).pipe().subscribe({
+        let values: any[] = []
+        let register = {
+          "formId": this.form.id,
+          "values": values
+        }
+        this.fields.forEach((field:any) => {
+            if (field.value.trim() != '') {
+                values.push({
+                  "val": field.value
+                })
+            }
+        })
+        this.service.findRegisters(register).pipe().subscribe({
             next: (registersData) => {
-              this.formRegisters.length = 0
-
-              registersData.forEach((regData: any) => {
-                  let values: any[] = []
-                  let register = {
-                      "id": regData.id,
-                      "values": values
-                  }
-                  register.values = this.getValues(regData.values)
-                  this.formRegisters.push(register)
-              })
+              this.populateDataTable(registersData)
               this.cdr.detectChanges()
             }
         })
     }
 
+    getLastRegisters() {
+        this.service.getLastRegisters(this.form.id).pipe().subscribe({
+            next: (registersData) => {
+              this.populateDataTable(registersData)
+              this.cdr.detectChanges()
+            }
+        })
+    }
+
+    populateDataTable(registersData: any) {
+        this.formRegisters.length = 0
+
+        registersData.forEach((regData: any) => {
+            let values: any[] = []
+            let register = {
+                "id": regData.id,
+                "values": values
+            }
+            register.values = this.getValues(regData.values)
+            this.formRegisters.push(register)
+        })
+    }
+
     getValues(valuesData: any): any[] {
         let values: any[] = []
-
-        console.log(`valuesData: ${valuesData}`)
 
         this.fields.forEach((field: any) => {
             values.push(this.findField(valuesData, field.id))
@@ -99,7 +119,6 @@ export class CadDataFormComponent extends BaseComponent implements OnInit {
             }
             return false
         })
-        console.log(`value - ${value}`)
         return value;
     }
 

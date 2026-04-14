@@ -39,7 +39,7 @@ public class FormController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-registers-by-values")
+    @PostMapping("/get-registers-by-values")
     public List<FormRegisterDTO> getByFormRegisterValues(@RequestBody FormRegisterDTO dto) {
         List<FormRegister>result = findRegisterUseCase.findByFormRegisterValues(dto);
 

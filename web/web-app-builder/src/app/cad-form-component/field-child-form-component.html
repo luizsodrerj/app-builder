@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="mb-3">
-    <label for="fieldType" class="form-label">
+    <label for="type" class="form-label">
         Tipo do Campo
     </label>
     <div>
@@ -38,10 +38,29 @@
                 #type
                 name="type"
                 id="type">
-            <option [value]="0">Selecione uma Opção</option>
+            <option [value]="0" selected>Selecione uma Opção</option>
             @for(item of types; track item.id) {
                 <option [value]="item.id">
                     {{item.typeName}}
+                </option>
+            }
+        </select>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="dataType" class="form-label">
+        Tipo do Dado
+    </label>
+    <div>
+        <select (change)="onChangeDataType(dataType.value)"
+                [(ngModel)]="dataTypeSelectedValue")
+                #dataType
+                name="dataType"
+                id="dataType">
+            <option [value]="0" selected>Selecione uma Opção</option>
+            @for(type of dataTypes; track type.dataTypeId) {
+                <option [value]="type.dataTypeId">
+                    {{type.getDataTypeName()}}
                 </option>
             }
         </select>

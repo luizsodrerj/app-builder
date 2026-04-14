@@ -97,9 +97,11 @@ export class CadFormComponent extends BaseComponent implements OnInit {
 
     onChildRowSelect(childEvent: any) {
         let selectedField = childEvent
+        this.fieldChildForm.dataTypeSelectedValue = selectedField.dataTypeId
         this.fieldChildForm.typeSelectedValue = selectedField.typeId
         this.fieldChildForm.field.name        = selectedField.name
         this.fieldChildForm.field.label       = selectedField.label
+        this.fieldChildForm.field.dataTypeId  = selectedField.dataTypeId
         this.fieldChildForm.field.dataType    = selectedField.dataType
         this.fieldChildForm.field.typeId      = selectedField.typeId
         this.fieldChildForm.field.type        = selectedField.type
@@ -117,10 +119,6 @@ export class CadFormComponent extends BaseComponent implements OnInit {
     }
 
     addField() {
-      // trocar para Combo de tipos de dados
-        this.fieldChildForm.field.dataTypeId = this.fieldChildForm.field.typeId
-        this.fieldChildForm.field.dataType = 'Texto'
-
         this.childForm.addField(this.fieldChildForm.field)
         this.reset()
     }
@@ -132,6 +130,7 @@ export class CadFormComponent extends BaseComponent implements OnInit {
     }
 
     reset() {
+        this.fieldChildForm.dataTypeSelectedValue = '0'
         this.fieldChildForm.typeSelectedValue = '0'
         this.fieldChildForm.field.name = ''
         this.fieldChildForm.field.type = ''

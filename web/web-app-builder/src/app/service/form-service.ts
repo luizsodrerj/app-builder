@@ -14,6 +14,11 @@ export class FormService {
     constructor(private http: HttpClient) { }
 
 
+    findRegisters(register: any): Observable<any> {
+        let endpoint = `${this.API}/get-registers-by-values`;
+        return this.http.post<any>(endpoint, register);
+    }
+
     persistRegister(register: any): Observable<any> {
         let endpoint = `${this.API}/new-register`;
         return this.http.post<any>(endpoint, register);

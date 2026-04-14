@@ -17,11 +17,12 @@ export class CadFormChildComponent {
 
 
     updateField(parentField: any) {
-        this.selectedField.name     =	parentField.name
-        this.selectedField.label    = parentField.label
-        this.selectedField.dataType = parentField.dataType
-        this.selectedField.typeId   = parentField.typeId
-        this.selectedField.type     = parentField.type
+        this.selectedField.name       =	parentField.name
+        this.selectedField.label      = parentField.label
+        this.selectedField.dataTypeId = parentField.dataTypeId
+        this.selectedField.dataType   = parentField.dataType
+        this.selectedField.typeId     = parentField.typeId
+        this.selectedField.type       = parentField.type
     }
 
     onRowSelect(event: any) {
@@ -30,12 +31,12 @@ export class CadFormChildComponent {
 
     addField(field: any) {
         this.fields.push({
-          name: 	 field.name,
-          label: 	 field.label,
+          name: 	    field.name,
+          label: 	    field.label,
           dataTypeId: field.dataTypeId,
-          dataType:field.dataType,
-          typeId:  field.typeId,
-          type: 	 field.type
+          dataType:   field.dataType,
+          typeId:     field.typeId,
+          type: 	    field.type
         })
     }
 

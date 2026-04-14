@@ -1,5 +1,7 @@
 import { Component, EventEmitter, model, OnInit, Output } from "@angular/core";
 import { FormsModule } from '@angular/forms';
+import { FormatTypes } from "../model/format-types";
+import { DataTypes } from "../model/data-types";
 
 @Component({
   selector: 'field-child-form-component',
@@ -10,19 +12,21 @@ import { FormsModule } from '@angular/forms';
 export class FieldChildFormComponent implements OnInit {
 
     field = {
-        name: '',
-        label: '',
-        dataTypeId: '',
-        dataType: '',
-        typeId: '',
-        type: '',
-        id: ''
+      name: '',
+      label: '',
+      dataTypeId: '',
+      dataType: '',
+      typeId: '',
+      type: '',
+      id: ''
     }
     fieldType = {
-        typeName: '',
-        id: ''
+      typeName: '',
+      id: ''
     }
-    typeSelectedValue = ''
+    dataTypeSelectedValue = '0'
+    typeSelectedValue = '0'
+    dataTypes:any[] = []
     types:any[] = []
 
     @Output()
@@ -44,6 +48,12 @@ export class FieldChildFormComponent implements OnInit {
         this.onChangeChildType.emit(value)
     }
 
+    onChangeDataType(value: string) {
+        let dataType = value != '0' ? DataTypes.getDataType(this.dataTypes, value) : new DataTypes
+        this.field.dataTypeId = value != '0' ? dataType.dataTypeId : ''
+        this.field.dataType   = value != '0' ? dataType.getDataTypeName(): ''
+    }
+
     getFieldTypeName(id: string): string {
         let typeName = ''
         this.types.forEach((type:any, index:number) => {
@@ -54,11 +64,20 @@ export class FieldChildFormComponent implements OnInit {
         return typeName;
     }
 
-    ngOnInit(): void {
+    populateTypes() {
         this.types.push({
             typeName: 'Campo de Texto',
             id: '1'
         })
+    }
+
+    populateDataTypes() {
+        this.dataTypes = DataTypes.getDataTypesList()
+    }
+
+    ngOnInit(): void {
+        this.populateDataTypes()
+        this.populateTypes()
     }
 
 

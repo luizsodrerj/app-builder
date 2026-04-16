@@ -35,6 +35,7 @@ export class CadFormChildComponent {
           label: 	    field.label,
           dataTypeId: field.dataTypeId,
           dataType:   field.dataType,
+          formatType: field.formatType,
           typeId:     field.typeId,
           type: 	    field.type
         })

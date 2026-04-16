@@ -22,6 +22,8 @@ public class App implements Serializable {
 
 	private String nome;
 
+	private Integer status;
+
 	//bi-directional many-to-one association to Form
 	@OneToMany(mappedBy="app", fetch = FetchType.LAZY)
 	private List<Form> forms = new ArrayList<>();
@@ -65,6 +67,14 @@ public class App implements Serializable {
 		form.setApp(null);
 
 		return form;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

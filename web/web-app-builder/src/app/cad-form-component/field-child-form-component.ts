@@ -16,6 +16,7 @@ export class FieldChildFormComponent implements OnInit {
       label: '',
       dataTypeId: '',
       dataType: '',
+      formatType: '',
       typeId: '',
       type: '',
       id: ''
@@ -52,6 +53,7 @@ export class FieldChildFormComponent implements OnInit {
         let dataType = value != '0' ? DataTypes.getDataType(this.dataTypes, value) : new DataTypes
         this.field.dataTypeId = value != '0' ? dataType.dataTypeId : ''
         this.field.dataType   = value != '0' ? dataType.getDataTypeName(): ''
+        this.field.formatType = dataType.hasDefaultMask ? dataType.defaultMaskId : ''
     }
 
     getFieldTypeName(id: string): string {

@@ -23,7 +23,7 @@ export class IndexAppForm extends BaseComponent implements OnInit {
       {
         title: 'Configurar Aplicação',
         text: 'Clique no botão abaixo para Configurar uma Aplicação Existente',
-        link: '/cad-app-form',
+        link: '/conf-app',
         btLabel: 'Configurar uma Aplicação',
         icon: 'pi pi-check'
       },

@@ -18,6 +18,14 @@ export class DataTypes {
         DataTypes.DATE_TIME
     ]
 
+    public static isMonetaryDataType(typeId: string): boolean {
+        return typeId == DataTypes.MONETARY
+    }
+
+    public isMonetary(): boolean {
+        return this.dataTypeId == DataTypes.MONETARY
+    }
+
     public getDataTypeName(): string {
         let name = ''
         switch(this.dataTypeId) {

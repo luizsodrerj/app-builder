@@ -6,6 +6,7 @@ import java.util.List;
 public class AppDTO {
     private String appId;
     private String name;
+    private String status;
     private List<FormDTO>forms = new ArrayList<>();
 
 
@@ -31,5 +32,13 @@ public class AppDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

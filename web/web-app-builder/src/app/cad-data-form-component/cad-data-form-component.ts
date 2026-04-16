@@ -7,13 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FieldData } from '../model/field-data';
+import { DataTypes } from '../model/data-types';
 
 @Component({
   selector: 'cad-data-form-component',
   imports: [
     HeaderComponent, FormsModule,
     TableModule, ButtonModule,
-    DialogModule
+    DialogModule, InputNumberModule
   ],
   templateUrl: './cad-data-form-component.html',
   styleUrl: './cad-data-form-component.css',
@@ -21,7 +24,7 @@ import { DialogModule } from 'primeng/dialog';
 })
 export class CadDataFormComponent extends BaseComponent implements OnInit {
 
-    fields: any[] = []
+    fields: FieldData[] = []
     formRegisters: any[] = []
     dlgFormDataVisible: boolean = false
 
@@ -111,15 +114,30 @@ export class CadDataFormComponent extends BaseComponent implements OnInit {
     }
 
     findField(values: any[], id: string) {
-        let value: any
-        values.some((val: any) => {
-            if (val.fieldId == id) {
-                value = val
+        let fieldValue: any
+        values.some((fieldVal: any) => {
+            if (fieldVal.fieldId == id) {
+                fieldValue = fieldVal
                 return true
             }
             return false
         })
-        return value;
+        this.formatFieldValue(fieldValue)
+        return fieldValue;
+    }
+
+    formatFieldValue(fieldValue: any) {
+      //formatType
+        let isMonetary: boolean = DataTypes.isMonetaryDataType(fieldValue.dataType)
+        let isNotEmpty: boolean = fieldValue.val != undefined && fieldValue.val != ''
+        if (isNotEmpty && isMonetary) {
+            let val = parseFloat(fieldValue.val)
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+            fieldValue.val = formatter.format(val)
+        }
     }
 
     onClickBtLimpar() {
@@ -133,16 +151,16 @@ export class CadDataFormComponent extends BaseComponent implements OnInit {
     }
 
     populateFields(fieldsData: any) {
-      fieldsData.forEach((data:any) => {
-          this.fields.push({
-            id        : data.id,
-            name  	  : data.name,
-            dataType 	: data.dataTypeId,
-            label 	  : data.label,
-            fieldType	: data.typeId,
-            formatType: '',
-            value: ''
-          })
+      fieldsData.forEach((fieldData:any) => {
+          let field: FieldData = new FieldData
+          field.id        = fieldData.id
+          field.name  	  = fieldData.name
+          field.dataType  = fieldData.dataType
+          field.label 	  = fieldData.label
+          field.fieldType	= fieldData.typeId
+          field.formatType= fieldData.formatType
+          field.value		  = ''
+          this.fields.push(field)
       });
     }
 

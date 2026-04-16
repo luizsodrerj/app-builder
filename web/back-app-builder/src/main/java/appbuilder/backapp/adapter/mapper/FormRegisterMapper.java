@@ -6,6 +6,7 @@ import appbuilder.backapp.core.entity.Field;
 import appbuilder.backapp.core.entity.FieldValue;
 import appbuilder.backapp.core.entity.Form;
 import appbuilder.backapp.core.entity.FormRegister;
+import appbuilder.backapp.core.entity.FieldAttribute;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -39,12 +40,18 @@ public class FormRegisterMapper {
         List<FieldValueDTO>values = new ArrayList<>();
 
         register.getFieldValues().forEach(fieldValue -> {
+            FieldAttribute fieldAttribute = fieldValue.getField().getFieldAttributes().get(0);
+            String formatType = fieldAttribute.getFormatType() != null ?
+                                fieldAttribute.getFormatType().toString() :
+                                "";
             values.add(
                 new FieldValueDTO(
                     fieldValue.getId().toString(),
                     fieldValue.getVal(),
                     fieldValue.getFormRegister().getId().toString(),
-                    fieldValue.getField().getId().toString()
+                    fieldValue.getField().getId().toString(),
+                    formatType,
+                    fieldAttribute.getDataType().toString()
                 )
             );
         });
@@ -57,7 +64,3 @@ public class FormRegisterMapper {
     }
 
 }
-
-
-
-

@@ -10,13 +10,24 @@
             {{fields[$index].label}}
         </label>
         <div>
-            <input
-              type="text"
-              [(ngModel)]="fields[$index].value"
-              style="width: 450px;"
-              name="f{{fields[$index].id}}"
-              id="f{{fields[$index].id}}"
-              pInputText/>
+            @if (field.isTypeOfMonetaryData()) {
+              <p-inputnumber
+                [(ngModel)]="fields[$index].value"
+                inputId="f{{fields[$index].id}}"
+                name="f{{fields[$index].id}}"
+                [minFractionDigits]="2"
+                [maxFractionDigits]="2"
+                locale="pt-BR"
+                mode="decimal"/>
+            } @else {
+              <input
+                type="text"
+                [(ngModel)]="fields[$index].value"
+                style="width: 450px;"
+                name="f{{fields[$index].id}}"
+                id="f{{fields[$index].id}}"
+                pInputText/>
+            }
         </div>
       </div>
     }

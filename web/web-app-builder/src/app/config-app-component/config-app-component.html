@@ -1,0 +1,46 @@
+<header-component></header-component>
+
+<div class="container">
+  <div class="row gx-4 gx-lg-5">
+      <div>
+        <h4>Escolha a Aplicação que você quer configurar</h4>
+      </div>
+      <ul style="margin-top: 25px;">
+        @for(app of apps; track app.appId) {
+            <li style="font-weight: bold;">
+              <div class="flex-div" style="margin-bottom: 10px;">
+                <div style="width: 28%;">
+                  <p-button
+                      icon="pi pi-cog"
+                      [rounded]="true"
+                      severity="success"
+                      [outlined]="true" />
+                  <a [routerLink]="['/list-form', app.appId]"
+                     style="margin-left: 7px;">
+                    {{app.name}}
+                  </a>
+                </div>
+                <div style="margin-top: 10px; margin-right: 5px;">
+                  {{app.getStatus()}}
+                </div>
+                <div>
+                  <p-button
+                    label="Habilitar"
+                    severity="success"
+                    variant="text"
+                    raised="true" />
+                  <span style="margin-right: 8px;"></span>
+                  <p-button
+                    label="Desabilitar"
+                    severity="danger"
+                    variant="text"
+                    raised="true" />
+                </div>
+              </div>
+            </li>
+        }
+      </ul>
+  </div>
+</div>
+
+

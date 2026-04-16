@@ -1,4 +1,3 @@
-import { model } from '@angular/core';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, inject, signal } from '@angular/core';
 import { HeaderComponent } from '../header-component/header-component';
 import { InputTextModule } from 'primeng/inputtext';
@@ -34,6 +33,7 @@ export class CadFormComponent extends BaseComponent implements OnInit {
         label: '',
         dataTypeId: '',
         dataType: '',
+        formatType: '',
         typeId: '',
         type: '',
         id: ''
@@ -65,7 +65,7 @@ export class CadFormComponent extends BaseComponent implements OnInit {
               "dataType" 	: field.dataTypeId,
               "label" 	  : field.label,
               "fieldType"	: field.typeId,
-              "formatType": ""
+              "formatType": field.formatType
             })
         })
         this.service.saveAppAndForm(app).pipe().subscribe({

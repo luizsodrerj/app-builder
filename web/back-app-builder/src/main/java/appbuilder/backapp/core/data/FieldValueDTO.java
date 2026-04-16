@@ -4,7 +4,9 @@ public record FieldValueDTO(
         String id,
         String val,
         String registerId,
-        String fieldId
+        String fieldId,
+        String formatType,
+        String dataType
     ) {
 
 }

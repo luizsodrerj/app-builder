@@ -57,7 +57,38 @@ export class CadFormComponent extends BaseComponent implements OnInit {
 
 
     onClickBtSalvar() {
-        let app     = this.createApp()
+        if (this.appId == '0') {
+            this.saveAppAndForm()
+        } else {
+            this.saveForm()
+        }
+    }
+
+    saveForm() {
+        let app = this.getApp()
+        this.populateFields(app)
+
+        this.service.saveAppForm(app).pipe().subscribe({
+            next: (data) => {
+              this.dialogs.dlgConfCriaFormVisible = true
+              this.cdr.detectChanges()
+            }
+        })
+    }
+
+    saveAppAndForm() {
+        let app = this.createApp()
+        this.populateFields(app)
+
+        this.service.saveAppAndForm(app).pipe().subscribe({
+            next: (data) => {
+              this.dialogs.dlgConfCriaFormVisible = true
+              this.cdr.detectChanges()
+            }
+        })
+    }
+
+    populateFields(app: any) {
         let fields  = this.childForm.fields
         fields.forEach((field:any, index:number) => {
             app.forms[0].fields.push({
@@ -68,31 +99,36 @@ export class CadFormComponent extends BaseComponent implements OnInit {
               "formatType": field.formatType
             })
         })
-        this.service.saveAppAndForm(app).pipe().subscribe({
-            next: (data) => {
-              this.dialogs.dlgConfCriaFormVisible = true
-              this.cdr.detectChanges()
-            }
-        })
+    }
+
+    getApp() {
+        let forms: any[] = this.getFormsObject()
+        return {
+            "appId": this.appId,
+            "forms": forms
+        }
+    }
+
+    createApp() {
+        let forms: any[] = this.getFormsObject()
+        return {
+            "name": this.appName,
+            "forms": forms
+        }
+    }
+
+    getFormsObject() {
+        let fields: any[] = []
+        return [{
+            "label": this.form.nome,
+            "nome" : this.form.nome,
+            "fields" : fields
+         }]
     }
 
     onClickChildBtOk(childEvent: any) {
         this.dialogs.dlgConfCriaFormVisible = false
         this.router.navigate(['/index-app-form']);
-    }
-
-    createApp() {
-        let fields: any[] = []
-        return {
-            "name": this.appName,
-            "forms": [
-              {
-                "label": this.form.nome,
-                "nome" : this.form.nome,
-	              "fields" : fields
-              }
-            ]
-        }
     }
 
     onChildRowSelect(childEvent: any) {

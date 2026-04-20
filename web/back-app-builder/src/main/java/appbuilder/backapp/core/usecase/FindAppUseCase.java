@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface FindAppUseCase {
     
+    List<App> findAllWithAnyStatus();
+
     List<App> findAll();
 
     App findById(Long id);

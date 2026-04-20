@@ -12,6 +12,9 @@ public class AppMapper {
         App app = new App();
         app.setNome(dto.getName());
 
+        if (StringUtils.isNotBlank(dto.getAppId())) {
+            app.setId(Long.valueOf(dto.getAppId()));
+        }
         if (!dto.getForms().isEmpty()) {
             dto.getForms().forEach(formDTO -> {
                 Form form = new FormMapper().toEntity(formDTO);

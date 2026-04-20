@@ -13,7 +13,7 @@ export const routes: Routes = [
     { path: 'list-form/:appId', component: ListFormComponent },
     { path: 'index-app-form', component: IndexAppForm },
     { path: 'home-form', component: HomeForm },
-    { path: 'cad-app-form', component: CadAppForm },
+    { path: 'cad-app-form/:appId', component: CadAppForm },
     { path: 'cad-form/:appId/:appName', component: CadFormComponent },
     { path: 'list-app', component: ListAppComponent },
     { path: 'cad-data-form/:formId', component: CadDataFormComponent },

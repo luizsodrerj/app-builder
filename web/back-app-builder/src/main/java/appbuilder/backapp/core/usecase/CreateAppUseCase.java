@@ -4,6 +4,8 @@ import appbuilder.backapp.core.entity.App;
 
 public interface CreateAppUseCase {
 
-    public void insertApp(App app);
+    void persistAppForm(App app);
+
+    void insertApp(App app);
 
 }

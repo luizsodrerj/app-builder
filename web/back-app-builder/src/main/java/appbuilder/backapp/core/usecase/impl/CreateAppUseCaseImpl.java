@@ -28,10 +28,20 @@ public class CreateAppUseCaseImpl implements CreateAppUseCase {
 
 
     @Override
+    public void persistAppForm(App app) {
+        List<Form>forms = app.getForms();
+        App persistedApp = appRepository.findById(app.getId()).get();
+        persistForms(persistedApp, forms);
+    }
+
+    @Override
     public void insertApp(App app) {
         List<Form>forms = app.getForms();
         appRepository.save(app);
+        persistForms(app, forms);
+    }
 
+    private void persistForms(App app, List<Form>forms) {
         if (!forms.isEmpty()) {
             forms.forEach(form -> {
                 form.setApp(app);
@@ -48,6 +58,7 @@ public class CreateAppUseCaseImpl implements CreateAppUseCase {
             });
         }
     }
+
 }
 
 

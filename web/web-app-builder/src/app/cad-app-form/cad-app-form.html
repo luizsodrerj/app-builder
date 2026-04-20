@@ -2,6 +2,7 @@
 
 <div class="container">
   <form>
+
     <div class="mb-3">
       <label for="nome" class="form-label">
           Nome da Aplicação
@@ -18,17 +19,68 @@
     </div>
     <div class="row">
         <div class="col-2" style="width: 14%;">
-            <p-button label="Criar Aplicação"
-                      [severity]="btSeverity" />
+            <p-button
+              (onClick)="onClickBtSave()"
+              [label]="btNewAppLabel"
+              [style]="{'width': '140px'}"
+              [severity]="btSeverity" />
         </div>
         <div class="col-3">
             <a [routerLink]="['/cad-form', app.id, app.nome]">
-              <p-button label="Criar um Formulário de Cadastro"
-                        [disabled]="disableBtCadForm"
-                        [severity]="btSeverity" />
+              <p-button
+                label="Criar um Formulário de Cadastro"
+                [disabled]="disableBtCadForm"
+                [severity]="btSeverity" />
             </a>
         </div>
+    </div>
+    <div class="row gx-4 gx-lg-5" style="margin-top: 40px;">
+      <div>
+        @if (forms.length > 0) {
+          <h5>
+            Selecione o Formulário ou Cadastro que você quer
+            Iniciar ou Configurar
+          </h5>
+        }
+      </div>
+      <ul style="margin-top: 25px;">
+        @for(form of forms; track form.id) {
+            <li class="components-li">
+              <a [routerLink]="['/cad-data-form', form.id]">
+                <p-button
+                  icon="pi pi-file-edit"
+                  [rounded]="true"
+                  severity="success"
+                  [outlined]="true" />
+              </a>
+              <a href="#" onclick="return false" style="margin-left: 5px;">
+                <p-button
+                  icon="pi pi-cog"
+                  [rounded]="true"
+                  severity="success"
+                  [outlined]="true" />
+              </a>
+              {{form.nome}}
+            </li>
+        }
+      </ul>
     </div>
 
   </form>
 </div>
+
+<p-dialog header="Cadastro de Aplicação"
+          [(visible)]="dlgVisible"
+          [style]="{ width: '25rem' }"
+          [modal]="true">
+    <div>
+        <span class="p-text-secondary block mb-8">
+            {{msgDialog}}
+        </span>
+    </div>
+    <div style="text-align:right; margin-top: 15px;">
+        <p-button
+            (click)="dlgVisible = false"
+            label="OK" />
+    </div>
+</p-dialog>

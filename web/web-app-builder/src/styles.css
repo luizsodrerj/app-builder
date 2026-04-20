@@ -4,3 +4,8 @@
   display:flex;
   gap:5px;
 }
+
+.components-li {
+  font-weight: bold;
+  margin-bottom: 3px;
+}

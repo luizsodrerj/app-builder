@@ -14,11 +14,19 @@
                   </p>
               </div>
               <div class="card-footer">
-                <a [routerLink]="[option.link]">
-                  <p-button [icon]="option.icon"
-                            [label]="option.btLabel"
-                            [severity]="btSeverity"/>
-                </a>
+                @if (option.hasParameter) {
+                  <a [routerLink]="[option.link, option.param]">
+                    <p-button [icon]="option.icon"
+                              [label]="option.btLabel"
+                              [severity]="btSeverity"/>
+                  </a>
+                } @else {
+                  <a [routerLink]="[option.link]">
+                    <p-button [icon]="option.icon"
+                              [label]="option.btLabel"
+                              [severity]="btSeverity"/>
+                  </a>
+                }
               </div>
           </div>
       </div>

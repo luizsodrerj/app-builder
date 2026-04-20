@@ -18,6 +18,8 @@ export class IndexAppForm extends BaseComponent implements OnInit {
         text: 'Clique no botão abaixo para Criar uma Nova Aplicação',
         link: '/cad-app-form',
         btLabel: 'Criar uma Nova Aplicação',
+        hasParameter: true,
+        param: '0',
         icon: 'pi pi-home'
       },
       {
@@ -25,6 +27,8 @@ export class IndexAppForm extends BaseComponent implements OnInit {
         text: 'Clique no botão abaixo para Configurar uma Aplicação Existente',
         link: '/conf-app',
         btLabel: 'Configurar uma Aplicação',
+        hasParameter: false,
+        param: '',
         icon: 'pi pi-check'
       },
       {
@@ -32,6 +36,8 @@ export class IndexAppForm extends BaseComponent implements OnInit {
         text: 'Clique no botão abaixo para Iniciar uma Aplicação',
         link: '/list-app',
         btLabel: 'Iniciar uma Aplicação',
+        hasParameter: false,
+        param: '',
         icon: 'pi pi-sitemap'
       }
     ]

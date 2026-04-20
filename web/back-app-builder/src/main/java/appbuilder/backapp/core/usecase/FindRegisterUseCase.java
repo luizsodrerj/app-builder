@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FindRegisterUseCase {
 
-    public List<FormRegister> findByFormRegisterValues(FormRegisterDTO register);
+    List<FormRegister> findByFormRegisterValues(FormRegisterDTO register);
 
     List<FormRegister> findAllRegisters(Long formId);
 

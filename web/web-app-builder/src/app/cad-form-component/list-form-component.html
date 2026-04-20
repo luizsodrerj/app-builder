@@ -7,7 +7,7 @@
       </div>
       <ul style="margin-top: 25px;">
         @for(form of forms; track form.id) {
-            <li style="font-weight: bold;">
+            <li class="components-li">
               <a [routerLink]="['/cad-data-form', form.id]">
                   <p-button
                     icon="pi pi-file-edit"

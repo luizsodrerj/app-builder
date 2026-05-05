@@ -1,0 +1,94 @@
+<ui:composition template="../commonLayout.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+<ui:define name="content">
+  <h:head></h:head>		
+  <div class="container" style="margin-left: 15%;">
+    <p:button style="display: none;" />
+
+    <script src="#{request.contextPath}/form-data/form-data.js?id=#{request.session.id}"></script>
+
+    <h4>#{formDataBean.form.label}</h4>
+    <div style="margin-bottom: 20px;"></div>
+
+    <ui:repeat var="field" value="#{formDataBean.fields}">
+      <div class="mb-3">
+        <label for="f#{field.id}" class="form-label">
+            #{field.label}
+        </label>
+        <div>
+            <h:panelGroup rendered="#{field.typeOfMonetaryData}">
+                <input 
+                  type="text"  
+                  name="f#{field.id}"
+                  id="f#{field.id}"
+                  class="money"/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not field.typeOfMonetaryData}">
+                <input 
+                  type="text"  
+                  style="width: 450px;"
+                  name="f#{field.id}"
+                  id="f#{field.id}"/>
+            </h:panelGroup>
+        </div>
+      </div>
+    </ui:repeat>
+    <div class="flex-div" style="gap: 15px !important;">
+      <div>
+        <p:commandButton
+          styleClass="ui-button-secondary"
+          action="#{formDataBean.onClickBtSalvar}"
+          oncomplete="PF('dlgSuccess').show();" 
+          value="Salvar"
+          ajax="false"/>
+      </div>
+      <div>
+        <p:commandButton
+          styleClass="ui-button-secondary"
+          action="#{formDataBean.onClickBtPesquisar}"
+          value="Pesquisar"
+          ajax="false"/>
+      </div>
+      <div>
+        <a onclick="onClickBtLimpar(); return false;"
+           href="#">
+          <p:button
+            styleClass="ui-button-secondary"
+            onclick="return false;"
+            value="Limpar"/>
+        </a>
+      </div>
+    </div>
+
+    <ui:include src="include-table.xhtml" />
+
+  </div>
+
+  <p:dialog 
+      header="Dados do Cadastro"  
+      widgetVar="dlgSuccess"
+      showEffect="fade" 
+      style="width: 25rem;"
+      modal="true">
+    <div>
+        <span class="p-text-secondary block mb-8">
+            Dados salvos com sucesso!
+        </span>
+    </div>
+    <div style="text-align:right; margin-top:15px;">
+        <a onclick="PF('dlgSuccess').close(); return false;"
+           href="#">
+          <p:button
+            styleClass="ui-button-success"
+            onclick="return false;"
+            value="OK"/>
+        </a>
+    </div>
+  </p:dialog>  
+
+</ui:define>
+</ui:composition>

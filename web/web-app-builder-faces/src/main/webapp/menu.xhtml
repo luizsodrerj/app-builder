@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<ui:composition
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:p="primefaces">
+    <h:head></h:head>
+    <style>
+        .ui-menuitem-text {
+            color:black; 
+            font-weight:bold;
+        }
+        .ui-menu .ui-menu-child {
+            white-space: nowrap;
+            width: auto !important;
+            min-width: 200px; 
+        }        
+    </style>
+    <f:loadBundle basename="messages" var="msg" />
+    <div class="card">
+      <p:menubar hideDelay="1000" style="height:50px; background:#abd0f2;">
+         <p:submenu label="Cadastro de #{msg['label.aplicacoes']}" icon="pi pi-fw pi-home">
+            <p:menuitem
+                value="Criar uma Nova #{msg['label.aplicacao']}"
+                action="/cad-app/cad-app.xhtml"
+                icon="pi pi-fw pi-check" 
+                ajax="false"/>
+            <p:menuitem
+                value="Configurar uma #{msg['label.aplicacao']}"
+                action="#{cadAppBean.getAllWithAnyStatus}"
+                icon="pi pi-fw pi-cog" 
+                ajax="false"/>
+            <p:menuitem
+                value="Iniciar uma #{msg['label.aplicacao']}"
+                action="#{cadAppBean.getAllApps}"
+                icon="pi pi-fw pi-sitemap" 
+                ajax="false"/>
+         </p:submenu>   
+         <p:menuitem
+            value="Cadastro de Formularios"
+            icon="pi pi-fw pi-link" 
+            ajax="false"/>
+      </p:menubar>
+    </div>
+
+    <header class="bg-primary bg-gradient text-white">
+        <div class="container px-4 text-center">
+            <h3 class="fw-bolder" style="color: white;">Application Builder</h3>
+        </div>
+        <div style="height: 4px;"></div>
+    </header>
+    <div style="margin-top: 22px;"></div>
+
+</ui:composition>

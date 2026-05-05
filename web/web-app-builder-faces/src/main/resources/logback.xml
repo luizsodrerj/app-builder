@@ -1,0 +1,11 @@
+<configuration>
+    <!-- Change level to WARN or ERROR to silence debug/info logs -->
+    <logger name="org.hibernate" level="WARN" />
+    <!-- Specific logger for SQL if you previously enabled it -->
+    <logger name="org.hibernate.SQL" level="OFF" />
+    <logger name="org.hibernate.type.descriptor.sql" level="OFF" />
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

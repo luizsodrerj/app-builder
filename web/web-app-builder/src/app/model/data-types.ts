@@ -8,9 +8,11 @@ export class DataTypes {
 
     dataTypeName!: string
     dataTypeId!: string
-    hasDefaultMask: boolean = false
+    showFormatTypes: boolean = false
+    hasDefaultMask: boolean  = false
     defaultMaskId!: string
     defaultMask!: string
+
 
     public static typesIds = [
         DataTypes.TEXT,
@@ -19,11 +21,15 @@ export class DataTypes {
     ]
 
     public static isMonetaryDataType(typeId: string): boolean {
-        return typeId == DataTypes.MONETARY
+        return typeId === DataTypes.MONETARY
+    }
+
+    public isDateTime(): boolean {
+        return this.dataTypeId === DataTypes.DATE_TIME
     }
 
     public isMonetary(): boolean {
-        return this.dataTypeId == DataTypes.MONETARY
+        return this.dataTypeId === DataTypes.MONETARY
     }
 
     public getDataTypeName(): string {
@@ -44,6 +50,12 @@ export class DataTypes {
         return name
     }
 
+    public static getDataTypeById(typeId: string) {
+        let types: DataTypes[] = DataTypes.getDataTypesList()
+
+        return DataTypes.getDataType(types, typeId)
+    }
+
     public static getDataType(dataTypes:DataTypes[], typeId:string) {
         let dataType!: DataTypes
         dataTypes.forEach((type:DataTypes) => {
@@ -62,6 +74,7 @@ export class DataTypes {
             type.hasDefaultMask = typeId == DataTypes.MONETARY ? true : false
             type.defaultMaskId  = typeId == DataTypes.MONETARY ? FormatTypes.MONETARY.toString() : ""
             type.defaultMask    = typeId == DataTypes.MONETARY ? FormatTypes.MONETARY_MASK : ""
+            type.showFormatTypes= typeId == DataTypes.DATE_TIME
             list.push(type)
         })
         return list

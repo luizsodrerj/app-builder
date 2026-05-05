@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
             },
             {
               label: 'Cadastro de Formulários',
-              routerLink: '/filiais-form',
+              routerLink: '/test-comp',
               icon: 'pi pi-link'
             }
         ]

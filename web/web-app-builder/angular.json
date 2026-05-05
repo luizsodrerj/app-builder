@@ -26,15 +26,16 @@
               }
             ],
             "styles": [
-              "src/bootstrap-5.0.0-beta1.min.css",
-              "src/LineIcons.2.0.css",
-              "src/tiny-slider.css",
-              "src/animate.css",
-              "src/lindy-uikit.css",
+              "src/css/bootstrap-5.0.0-beta1.min.css",
+              "src/css/glightbox.min.css",
+              "src/css/LineIcons.2.0.css",
+              "src/css/tiny-slider.css",
+              "src/css/animate.css",
+              "src/css/lindy-uikit.css",
+              "src/css/styles.css",
               "node_modules/jquery-ui/themes/base/all.css",
               "node_modules/jquery-ui/themes/base/datepicker.css",
-              "node_modules/primeicons/primeicons.css",
-              "src/styles.css"
+              "node_modules/primeicons/primeicons.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

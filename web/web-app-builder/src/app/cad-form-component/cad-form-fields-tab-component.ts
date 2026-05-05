@@ -4,8 +4,8 @@ import { Table, TableModule } from 'primeng/table';
 @Component({
   selector: 'cad-form-child-component',
   imports: [TableModule],
-  templateUrl: './cad-form-child-component.html',
-  styleUrl: './cad-form-child-component.css',
+  templateUrl: './cad-form-fields-tab-component.html',
+  styleUrl: './cad-form-fields-tab-component.css',
 })
 export class CadFormChildComponent {
 
@@ -21,6 +21,7 @@ export class CadFormChildComponent {
         this.selectedField.label      = parentField.label
         this.selectedField.dataTypeId = parentField.dataTypeId
         this.selectedField.dataType   = parentField.dataType
+        this.selectedField.formatType = parentField.formatType
         this.selectedField.typeId     = parentField.typeId
         this.selectedField.type       = parentField.type
     }

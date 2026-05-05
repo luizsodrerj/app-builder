@@ -52,17 +52,40 @@
         Tipo do Dado
     </label>
     <div>
-        <select (change)="onChangeDataType(dataType.value)"
-                [(ngModel)]="dataTypeSelectedValue")
-                #dataType
-                name="dataType"
-                id="dataType">
-            <option [value]="0" selected>Selecione uma Opção</option>
-            @for(type of dataTypes; track type.dataTypeId) {
-                <option [value]="type.dataTypeId">
-                    {{type.getDataTypeName()}}
-                </option>
-            }
+        <select
+          (change)="onChangeDataType(dataType.value)"
+          [(ngModel)]="dataTypeSelectedValue")
+          #dataType
+          name="dataType"
+          id="dataType">
+          <option [value]="0" selected>Selecione uma Opção</option>
+          @for(type of dataTypes; track type.dataTypeId) {
+            <option [value]="type.dataTypeId">
+                {{type.getDataTypeName()}}
+            </option>
+          }
         </select>
     </div>
   </div>
+  @if (formatTypesVisible) {
+    <div class="mb-3">
+      <label for="formatType" class="form-label">
+          Tipo de Formato
+      </label>
+      <div>
+        <select
+          [(ngModel)]="formatTypeSelectedValue")
+          (change)="onChangeDateFormatType(formatType.value)"
+          #formatType
+          name="formatType"
+          id="formatType">
+          <option [value]="0" selected>Selecione uma Opção</option>
+          @for(dateFormat of dateFormatTypes; track dateFormat.formatTypeId) {
+            <option [value]="dateFormat.formatTypeId">
+              {{dateFormat.formatTypeName}}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+  }

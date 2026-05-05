@@ -16,6 +16,7 @@ export class FieldChildFormComponent implements OnInit {
       label: '',
       dataTypeId: '',
       dataType: '',
+      formatTypeName: '',
       formatType: '',
       typeId: '',
       type: '',
@@ -25,10 +26,13 @@ export class FieldChildFormComponent implements OnInit {
       typeName: '',
       id: ''
     }
+    dateFormatTypes: FormatTypes[] = []
+    dataTypes: DataTypes[] = []
+    types:any[] = []
+    formatTypeSelectedValue = '0'
     dataTypeSelectedValue = '0'
     typeSelectedValue = '0'
-    dataTypes:any[] = []
-    types:any[] = []
+    formatTypesVisible: boolean = false
 
     @Output()
     onChangeChildType = new EventEmitter();
@@ -54,6 +58,22 @@ export class FieldChildFormComponent implements OnInit {
         this.field.dataTypeId = value != '0' ? dataType.dataTypeId : ''
         this.field.dataType   = value != '0' ? dataType.getDataTypeName(): ''
         this.field.formatType = dataType.hasDefaultMask ? dataType.defaultMaskId : ''
+
+        let showFormats = dataType.showFormatTypes
+        let dateTime    = dataType.isDateTime()
+        let notEmpty    = value != '0'
+        this.formatTypesVisible = notEmpty && dateTime && showFormats
+    }
+
+    onChangeDateFormatType(formatTypeValue: string) {
+        this.field.formatType = formatTypeValue != '0' ? formatTypeValue : ''
+
+        if (formatTypeValue != '0') {
+            this.field.formatTypeName = FormatTypes.getDateTimeFormatType(
+                                          this.dateFormatTypes,
+                                          formatTypeValue
+                                        ).formatTypeName
+        }
     }
 
     getFieldTypeName(id: string): string {
@@ -77,7 +97,12 @@ export class FieldChildFormComponent implements OnInit {
         this.dataTypes = DataTypes.getDataTypesList()
     }
 
+    populateDateFormatTypes() {
+        this.dateFormatTypes = FormatTypes.getDateTimeFormatTypes()
+    }
+
     ngOnInit(): void {
+        this.populateDateFormatTypes()
         this.populateDataTypes()
         this.populateTypes()
     }

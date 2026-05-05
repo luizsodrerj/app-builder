@@ -1,0 +1,26 @@
+
+
+<div class="container" style="margin-top: 20px;">
+<!--
+-->
+  @for (dateFormat of dateFormats; track dateFormat.formatTypeId) {
+    <div style="margin-bottom: 10px;">
+        @if (dateFormat.showTime) {
+          <p-datepicker
+            inputId="f{{dateFormat.formatTypeId}}"
+            [dateFormat]="dateFormat.mask"
+            [showTime]="dateFormat.showTime"
+            [showSeconds]="dateFormat.showSeconds"
+            [hourFormat]="dateFormat.hourFormat"
+            [timeOnly]="dateFormat.timeOnly"/>
+          {{dateFormat.formatTypeName}}
+        } @else () {
+          <p-datepicker
+            inputId="f{{dateFormat.formatTypeId}}"
+            [dateFormat]="dateFormat.mask"/>
+          {{dateFormat.formatTypeName}}
+        }
+    </div>
+  }
+
+</div>

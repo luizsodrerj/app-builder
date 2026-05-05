@@ -4,7 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { BaseComponent } from '../base/base-component';
-import { CadFormChildComponent } from './cad-form-child-component';
+import { CadFormChildComponent } from './cad-form-fields-tab-component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CadFormDialogsComponent } from './cadform-dialogs-component';
 import { FieldChildFormComponent } from './field-child-form-component';
@@ -133,12 +133,14 @@ export class CadFormComponent extends BaseComponent implements OnInit {
 
     onChildRowSelect(childEvent: any) {
         let selectedField = childEvent
-        this.fieldChildForm.dataTypeSelectedValue = selectedField.dataTypeId
+        this.fieldChildForm.formatTypeSelectedValue = selectedField.formatType
+        this.fieldChildForm.dataTypeSelectedValue   = selectedField.dataTypeId
         this.fieldChildForm.typeSelectedValue = selectedField.typeId
         this.fieldChildForm.field.name        = selectedField.name
         this.fieldChildForm.field.label       = selectedField.label
         this.fieldChildForm.field.dataTypeId  = selectedField.dataTypeId
         this.fieldChildForm.field.dataType    = selectedField.dataType
+        this.fieldChildForm.field.formatType  = selectedField.formatType
         this.fieldChildForm.field.typeId      = selectedField.typeId
         this.fieldChildForm.field.type        = selectedField.type
         this.fieldChildForm.labelValue.set(selectedField.label)
@@ -166,6 +168,7 @@ export class CadFormComponent extends BaseComponent implements OnInit {
     }
 
     reset() {
+        this.fieldChildForm.formatTypeSelectedValue = '0'
         this.fieldChildForm.dataTypeSelectedValue = '0'
         this.fieldChildForm.typeSelectedValue = '0'
         this.fieldChildForm.field.name = ''

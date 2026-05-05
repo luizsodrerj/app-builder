@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+<h:head>
+    <ui:include src="../header.xhtml" />
+</h:head>
+<body>
+<f:loadBundle basename="messages" var="msg" />
+<h:form>
+    <ui:include src="../menu.xhtml" />
+
+    <h:inputHidden value="#{cadAppBean.app.appId}"/>
+
+    <div class="container">
+        <div class="mb-3">
+            <label for="name" class="form-label">
+                Nome da #{msg['label.aplicacao']}
+            </label>
+            <div>
+                <h:inputText
+                  value="#{cadAppBean.app.name}"
+                  style="width: 450px;"
+                  id="name"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2" style="width: 14%;">
+                <p:button
+                    action="#{cadAppBean.onClickBtSave}"
+                    styleClass="ui-button-secondary"
+                    style="width: 160px"
+                    value="Salvar"/>
+            </div>
+            <div class="col-3">
+                <p:button
+                    styleClass="ui-button-secondary"
+                    value="Criar um #{msg['label.formulario']} de Cadastro"/>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5" style="margin-top: 40px;">
+            <div>
+                <h:panelGroup rendered="#{not empty cadAppBean.app.forms}">
+                    <h5>
+                        Selecione o #{msg['label.formulario']} ou Cadastro que voce quer
+                        Iniciar ou Configurar
+                    </h5>
+                </h:panelGroup>
+            </div>
+            <div style="margin-top: 25px;"></div>
+            <p:dataList 
+                style="width:65%;"
+                rendered="#{not empty cadAppBean.app.forms}"
+                value="#{cadAppBean.app.forms}" 
+                var="form">
+                <!--<a [routerLink]="['/cad-data-form', form.id]">-->
+                <div style="margin-bottom: 4px;">
+                    <p:button
+                        styleClass="rounded-button ui-button-success ui-button-outlined"
+                        icon="pi pi-file-edit"/>
+                    <span style="margin-left: 2px;"></span>
+                    <p:button
+                        styleClass="rounded-button ui-button-success ui-button-outlined"
+                        icon="pi pi-cog"/>
+                    <span style="font-weight:bold; margin-left:3px;">
+                        #{form.nome}
+                    </span>
+                </div>    
+            </p:dataList>
+        </div>
+
+    </div>
+</h:form>
+</body>
+</html>

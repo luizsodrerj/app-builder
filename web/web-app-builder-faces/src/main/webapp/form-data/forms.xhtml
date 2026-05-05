@@ -1,0 +1,48 @@
+<ui:composition template="../commonLayout.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+<ui:define name="content">
+  <h:head></h:head>		
+  <div class="container">
+
+    <div class="row gx-4 gx-lg-5">
+      <div>
+        <h4>Lista de Cadastros e #{msg['label.formularios']}</h4>
+      </div>
+      <ul style="margin-top: 25px;">
+        <ui:repeat var="form" value="#{formDataBean.forms}">
+            <li class="components-li">
+                <p:button
+                    styleClass="rounded-button ui-button-success ui-button-outlined"
+                    action="#{formDataBean.initializeForm}"
+                    style="margin-bottom: 5px;"
+                    icon="pi pi-file-edit">
+                  <f:param
+                    value="#{form.id}"
+                    name="formId"/>
+                </p:button>    
+                <h:commandLink
+                    action="#{formDataBean.initializeForm}"
+                    style="margin-left: 7px;">
+                  <f:param
+                    value="#{form.id}"
+                    name="formId"/>
+                  #{form.nome}
+                </h:commandLink>
+            </li>
+        </ui:repeat>    
+      </ul>
+    </div>
+	
+  </div>
+</ui:define>
+</ui:composition>
+
+
+
+
+
+

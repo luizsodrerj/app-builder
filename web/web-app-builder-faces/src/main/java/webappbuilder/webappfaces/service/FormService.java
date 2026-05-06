@@ -1,12 +1,5 @@
 package webappbuilder.webappfaces.service;
 
-import appbuilder.core.data.FormDTO;
-import appbuilder.core.entity.Form;
-import appbuilder.core.entity.FormRegister;
-import appbuilder.core.mapper.FieldMapper;
-import appbuilder.core.mapper.FormMapper;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +8,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import appbuilder.core.data.FormDTO;
+import appbuilder.core.entity.Form;
+import appbuilder.core.entity.FormRegister;
+import appbuilder.core.mapper.FieldMapper;
+import appbuilder.core.mapper.FormMapper;
 import webappbuilder.webappfaces.data.dto.FormRegisterDTOWrapper;
 import webappbuilder.webappfaces.data.mapper.FieldWrapperMapper;
 import webappbuilder.webappfaces.repository.FieldValueWebRepository;
@@ -43,15 +41,7 @@ public class FormService {
         List<FormRegister>result = registerRepository.findByFormIdOrderByIdDesc(
                                      formId, PageRequest.of(0, 5)
                                    );
-        return toDTOList(result);                                   
-    }
-
-    private List<FormRegisterDTOWrapper> toDTOList(List<FormRegister>list) {
-        List<FormRegisterDTOWrapper>data = new ArrayList<>();
-        list.forEach(register -> {
-            data.add(new FieldWrapperMapper().toDTO(register));
-        });
-        return data;
+        return new FieldWrapperMapper().toDTOList(result);                                   
     }
 
     @Transactional

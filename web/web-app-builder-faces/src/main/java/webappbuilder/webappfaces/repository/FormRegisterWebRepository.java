@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import appbuilder.core.entity.FormRegister;
 
-public interface FormRegisterWebRepository extends JpaRepository<FormRegister, Long> {
+public interface FormRegisterWebRepository extends JpaRepository<FormRegister,Long>, FormRegisterSearchWebRepository {
 
     List<FormRegister> findByFormIdOrderByIdDesc(Long id, Pageable pageable);
 

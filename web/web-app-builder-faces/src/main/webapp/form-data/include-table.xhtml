@@ -6,11 +6,15 @@
       xmlns:p="primefaces">
   <h:head></h:head>		
   <div style="margin-top: 25px;">
-	
-  <!--<:panelGroup rendered="{not empty formDataBean.registers}">-->
+	  <!---->
     <h:panelGroup rendered="#{not empty formDataBean.registers}">
-      <p:dataTable  value="#{formDataBean.registers}"
-                    var="register" >
+      <p:dataTable  selection="#{formDataBean.selectedRegister}" 
+                    selectionMode="single"
+                    rowKey="#{register.id}"
+                    value="#{formDataBean.registers}"
+                    var="register">
+        <p:ajax listener="#{formDataBean.onRowSelect}"
+                event="rowSelect" />
         <p:columns  headerText="#{column}"
                     value="#{formDataBean.columns}" 
                     var="column"
@@ -23,7 +27,6 @@
         </p:columns>
       </p:dataTable>
     </h:panelGroup>
-	
 	
   </div>
 </ui:composition>

@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import appbuilder.core.data.FieldDTO;
+import appbuilder.core.data.FieldValueDTO;
 import appbuilder.core.data.FormDTO;
+import appbuilder.core.data.FormRegisterDTO;
 import appbuilder.core.entity.Field;
 import appbuilder.core.entity.FieldValue;
 import appbuilder.core.entity.Form;
@@ -17,24 +22,43 @@ import appbuilder.core.entity.FormRegister;
 import webappbuilder.webappfaces.data.dto.FieldDTOWrapper;
 import webappbuilder.webappfaces.data.dto.FormRegisterDTOWrapper;
 import webappbuilder.webappfaces.faces.FacesUtil;
+import webappbuilder.webappfaces.service.FormRegisterService;
 import webappbuilder.webappfaces.service.FormService;
 
 @Component("formDataBean")
 @Scope("session")
 public class FormDataBean {
 
+    private static final String OP_UPDATE = "OP_UPDATE";
+    private static final String OP_CREATE = "OP_CREATE";
+
     private List<FieldDTOWrapper>fields = new ArrayList<>();
     private List<FormRegisterDTOWrapper>registers = new ArrayList<>();
     private List<String> columns = new ArrayList<>();
     private List<FormDTO>forms = new ArrayList<>();
+    private FormRegisterDTOWrapper selectedRegister;
     private FormDTO form = new FormDTO();
+    private String operation = FormDataBean.OP_CREATE;
 
+    @Autowired
+    private FormRegisterService formRegisterService; 
     @Autowired
     private FormService formService;
 
 
     public void onClickBtSalvar() {
+        if (operation.equals(OP_CREATE)) {
+            createRegister();
+        } else {
+            updateRegister();
+        }
+    }
+
+    public void createRegister() {
         FormRegister register = new FormRegister();
+        register.setForm(new Form());
+        register.getForm().setId(Long.valueOf(form.getId()));
+
         fields.forEach(fieldValue -> {
             String val       = FacesUtil.getParameter("f"+fieldValue.getId());
             FieldValue value = new FieldValue();
@@ -42,25 +66,107 @@ public class FormDataBean {
             field.setId(Long.valueOf(fieldValue.getId()));
             value.setField(field);
             value.setVal(val);
-            register.setForm(new Form());
-            register.getForm().setId(Long.valueOf(form.getId()));
             register.getFieldValues().add(value);
         });
         formService.createRegister(register);
+        PrimeFaces.current().executeScript("PF('dlgSuccess').show();");
         getLastRegisters();
     }
 
-    private void getLastRegisters() {
-        registers.clear();
-        registers.addAll(
-            formService.getAllRegisters(
-                Long.valueOf(form.getId())
-            )
-        );
+    private void updateRegister() {
+        populateValues();
+        formRegisterService.updateRegister(selectedRegister);
+        operation = FormDataBean.OP_CREATE;
+        PrimeFaces.current().executeScript("PF('dlgSuccess').show();");
+        getLastRegisters();
+        selectedRegister = null;
+        // TODO create method reset() 
+        fields.forEach(field -> {
+            field.setValue("");
+        });
+    }
+
+    private void populateValues() {
+        selectedRegister.getValues().forEach(fieldValue -> {
+            String val = FacesUtil.getParameter("f"+fieldValue.getId());
+            fieldValue.setValue(val);
+        });
+    }
+
+    public void onRowSelect(SelectEvent<FormRegisterDTOWrapper> event) {
+        FormRegisterDTOWrapper register = event.getObject();
+        this.selectedRegister = register;
+
+        fields.forEach(field -> {
+            register.getValues().forEach(fieldValue -> {
+                if (fieldValue.getId().equals(field.getId())) {
+                    field.setValue(fieldValue.getValue());
+                }
+            });
+        });
+        operation = FormDataBean.OP_UPDATE;
+        FacesUtil.handleNavigation("/form-data/form-data.xhtml?faces-redirect=true");
     }
 
     public void onClickBtPesquisar() {
-        getLastRegisters();
+        List<FieldValueDTO>values = new ArrayList<>();
+        populateValues(values);
+
+        if (!values.isEmpty()) {
+            List<FormRegisterDTOWrapper>regData = formRegisterService.findByFormRegisterValues(
+                                                    new FormRegisterDTO(
+                                                        null,
+                                                        values,
+                                                        form.getId()
+                                                    )
+                                                ); 
+            populateTable(regData);    
+        } else {
+            getLastRegisters();
+        }
+    }
+
+    private void populateValues(List<FieldValueDTO> values) {
+        fields.forEach(field -> {
+            String val = FacesUtil.getParameter("f"+field.getId());
+            if (StringUtils.isNotBlank(val)) {
+                values.add(
+                    new FieldValueDTO(
+                        null,
+                        val,
+                        null,
+                        null,
+                        null,
+                        null
+                    )                    
+                );
+            }
+        });
+    }
+
+    private void getLastRegisters() {
+        List<FormRegisterDTOWrapper>regData = formService.getAllRegisters(Long.valueOf(form.getId()));
+        populateTable(regData);
+    }
+
+    private void populateTable(List<FormRegisterDTOWrapper>regData) {
+        registers.clear();
+        regData.forEach(register -> {
+            List<FieldDTOWrapper>values = new ArrayList<>(register.getValues());
+            register.getValues().clear();
+            populateValues(values, register);
+            registers.add(register);
+        });
+    }
+
+    private void populateValues(List<FieldDTOWrapper>values, FormRegisterDTOWrapper register) {
+        columns.forEach(column -> {
+            values.forEach(fieldValue -> {
+                if (fieldValue.getLabel().equals(column)) {
+                    register.getValues().add(fieldValue);
+                }
+            });
+        });
     }
 
     public String onClickBtGetForms() {
@@ -109,6 +215,14 @@ public class FormDataBean {
 
     public List<FieldDTOWrapper> getFields() {
         return fields;
+    }
+
+    public void setSelectedRegister(FormRegisterDTOWrapper selectedRegister) {
+        this.selectedRegister = selectedRegister;
+    }
+
+    public FormRegisterDTOWrapper getSelectedRegister() {
+        return selectedRegister;
     }
 
     public List<FormRegisterDTOWrapper> getRegisters() {

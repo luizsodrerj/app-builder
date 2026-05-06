@@ -14,6 +14,14 @@ import webappbuilder.webappfaces.data.model.DataType;
 
 public class FieldWrapperMapper {
 
+    public List<FormRegisterDTOWrapper> toDTOList(List<FormRegister>list) {
+        List<FormRegisterDTOWrapper>data = new ArrayList<>();
+        list.forEach(register -> {
+            data.add(toDTO(register));
+        });
+        return data;
+    }
+
     public FormRegisterDTOWrapper toDTO(FormRegister register) {
         List<FieldDTOWrapper>values = new ArrayList<>();
 

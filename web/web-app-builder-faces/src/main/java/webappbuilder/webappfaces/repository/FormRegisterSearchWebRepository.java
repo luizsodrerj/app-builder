@@ -1,0 +1,12 @@
+package webappbuilder.webappfaces.repository;
+
+import java.util.List;
+
+import appbuilder.core.data.FormRegisterDTO;
+import appbuilder.core.entity.FormRegister;
+
+public interface FormRegisterSearchWebRepository {
+
+    List<FormRegister> findByFormRegisterValues(FormRegisterDTO register);
+
+}

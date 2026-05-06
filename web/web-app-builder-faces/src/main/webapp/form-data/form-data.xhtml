@@ -23,6 +23,7 @@
             <h:panelGroup rendered="#{field.typeOfMonetaryData}">
                 <input 
                   type="text"  
+                  value="#{field.value}"
                   name="f#{field.id}"
                   id="f#{field.id}"
                   class="money"/>
@@ -30,6 +31,7 @@
             <h:panelGroup rendered="#{not field.typeOfMonetaryData}">
                 <input 
                   type="text"  
+                  value="#{field.value}"
                   style="width: 450px;"
                   name="f#{field.id}"
                   id="f#{field.id}"/>
@@ -80,7 +82,7 @@
         </span>
     </div>
     <div style="text-align:right; margin-top:15px;">
-        <a onclick="PF('dlgSuccess').close(); return false;"
+        <a onclick="PF('dlgSuccess').hide(); return false;"
            href="#">
           <p:button
             styleClass="ui-button-success"

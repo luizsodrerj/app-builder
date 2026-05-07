@@ -6,10 +6,18 @@
       xmlns:p="primefaces">
   <h:head></h:head>		
   <div style="margin-top: 25px;">
-	  <!---->
+
     <h:panelGroup rendered="#{not empty formDataBean.registers}">
+      <div style="text-align:right;">
+        <span style="font-weight: bold;">
+          Total Valor: 50,00
+        </span>
+        <span style="margin-right: 60px;"></span>
+      </div>
       <p:dataTable  selection="#{formDataBean.selectedRegister}" 
                     selectionMode="single"
+                    allowUnsorting="true" 
+                    sortMode="single"
                     rowKey="#{register.id}"
                     value="#{formDataBean.registers}"
                     var="register">
@@ -18,10 +26,8 @@
         <p:columns  headerText="#{column}"
                     value="#{formDataBean.columns}" 
                     var="column"
-                    columnIndexVar="colIndex"
-                    filterDisabled="true"
-                    filterable="false" 
-                    sortBy="null">
+                    sortBy="#{register.values[colIndex].value}"
+                    columnIndexVar="colIndex">
             <h:outputText 
                 value="#{register.values[colIndex].value}"/>
         </p:columns>

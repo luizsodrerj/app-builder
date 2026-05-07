@@ -14,16 +14,17 @@ import org.springframework.stereotype.Component;
 import appbuilder.core.data.FieldDTO;
 import appbuilder.core.data.FieldValueDTO;
 import appbuilder.core.data.FormDTO;
-import appbuilder.core.data.FormRegisterDTO;
 import appbuilder.core.entity.Field;
 import appbuilder.core.entity.FieldValue;
 import appbuilder.core.entity.Form;
 import appbuilder.core.entity.FormRegister;
 import webappbuilder.webappfaces.data.dto.FieldDTOWrapper;
 import webappbuilder.webappfaces.data.dto.FormRegisterDTOWrapper;
+import webappbuilder.webappfaces.data.dto.SumValueDTO;
 import webappbuilder.webappfaces.faces.FacesUtil;
 import webappbuilder.webappfaces.service.FormRegisterService;
 import webappbuilder.webappfaces.service.FormService;
+import webappbuilder.webappfaces.view.helper.FormDataBeanViewHelper;
 
 @Component("formDataBean")
 @Scope("session")
@@ -39,6 +40,8 @@ public class FormDataBean {
     private FormRegisterDTOWrapper selectedRegister;
     private FormDTO form = new FormDTO();
     private String operation = FormDataBean.OP_CREATE;
+    private FormDataBeanViewHelper dataBeanHelper = new FormDataBeanViewHelper(); 
+    private List<SumValueDTO>sumValuesList = new ArrayList<>();
 
     @Autowired
     private FormRegisterService formRegisterService; 
@@ -79,11 +82,7 @@ public class FormDataBean {
         operation = FormDataBean.OP_CREATE;
         PrimeFaces.current().executeScript("PF('dlgSuccess').show();");
         getLastRegisters();
-        selectedRegister = null;
-        // TODO create method reset() 
-        fields.forEach(field -> {
-            field.setValue("");
-        });
+        resetFields();
     }
 
     private void populateValues() {
@@ -111,23 +110,18 @@ public class FormDataBean {
     public void onClickBtPesquisar() {
         List<FieldValueDTO>values = new ArrayList<>();
         populateValues(values);
+        dataBeanHelper.populateSumValues(this, values);
 
         if (!values.isEmpty()) {
-            List<FormRegisterDTOWrapper>regData = formRegisterService.findByFormRegisterValues(
-                                                    new FormRegisterDTO(
-                                                        null,
-                                                        values,
-                                                        form.getId()
-                                                    )
-                                                ); 
-            populateTable(regData);    
+            populateTable(dataBeanHelper.findByFormRegisterValues(formRegisterService,values,this));    
         } else {
             getLastRegisters();
         }
+        selectedRegister = null;
     }
 
     private void populateValues(List<FieldValueDTO> values) {
-        fields.forEach(field -> {
+        fields.forEach(field -> { 
             String val = FacesUtil.getParameter("f"+field.getId());
             if (StringUtils.isNotBlank(val)) {
                 values.add(
@@ -177,10 +171,15 @@ public class FormDataBean {
         return "/form-data/forms.xhtml";
     }
 
+    public void onClickBtLimpar() {
+        resetFields();
+    }
+
     public String initializeForm() {
         Long formId = Long.valueOf(FacesUtil.getRequest().getParameter("formId"));
         FormDTO dto = formService.findById(formId);
 
+        this.sumValuesList.clear();
         this.registers.clear();
         this.columns.clear();
         this.fields.clear();
@@ -213,6 +212,14 @@ public class FormDataBean {
         }
     }
 
+    private void resetFields() {
+        selectedRegister = null;
+
+        fields.forEach(field -> {
+            field.setValue("");
+        });
+    }
+
     public List<FieldDTOWrapper> getFields() {
         return fields;
     }
@@ -235,6 +242,10 @@ public class FormDataBean {
 
     public List<FormDTO> getForms() {
         return forms;
+    }
+
+    public List<SumValueDTO> getSumValuesList() {
+        return sumValuesList;
     }
 
     public FormDTO getForm() {

@@ -1,5 +1,6 @@
 package webappbuilder.webappfaces.repository;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +13,45 @@ import appbuilder.core.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import webappbuilder.webappfaces.data.dto.SumValueDTO;
 
 public class FormRegisterSearchWebRepositoryImpl implements FormRegisterSearchWebRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
+    public SumValueDTO findByFieldTotalValue(SumValueDTO sumValue) {
+        List<FieldValueDTO>values = sumValue.getValues();
+        Map<String,Object>params = new HashMap<>();
+        params.put("fieldId", Long.valueOf(sumValue.getFieldId()));
+        params.put("formId", sumValue.getFormId());
+
+        String sql =
+            "SELECT SUM(CAST(REPLACE(REPLACE(fv.val, '.',''), ',', '.') AS DOUBLE)) " +
+            "FROM   FieldValue fv " +
+            "WHERE  fv.formRegister.form.id = :formId  " +
+            "AND    fv.field.id             = :fieldId " +
+            "AND    fv.formRegister.id IN ( " +
+            "  SELECT   f.formRegister.id " +
+            "  FROM     FieldValue f " +
+            "  WHERE    f.formRegister.form.id = :formId " +
+            "  AND (    ";
+        final StringBuilder mainSql = new StringBuilder(sql);
+        setValues(values, mainSql, params);
+        mainSql.append(
+            "  ) " +
+            ")"
+        );
+        Query query = entityManager.createQuery(mainSql.toString());
+        JPAUtil.setQueryParams(query, params);
+        sumValue.setTotalValue((BigDecimal)query.getSingleResult());
+
+        return sumValue;
+    }
+
     @SuppressWarnings("unchecked")
+    @Override
     public List<FormRegister> findByFormRegisterValues(FormRegisterDTO register) {
         List<FieldValueDTO>values = register.values();
         Map<String,Object>params = new HashMap<>();

@@ -21,76 +21,36 @@
         </label>
         <div>
             <h:panelGroup rendered="#{field.typeOfMonetaryData}">
-                <input 
-                  type="text"  
-                  value="#{field.value}"
-                  name="f#{field.id}"
-                  id="f#{field.id}"
-                  class="money"/>
+              <input 
+                type="text"  
+                value="#{field.value}"
+                name="f#{field.id}"
+                id="f#{field.id}"
+                class="money"/>
+              <input name="total-field-#{field.id}"
+                     style="margin-left: 15px;"
+                     type="checkbox"
+                     value="true"/>
             </h:panelGroup>
             <h:panelGroup rendered="#{not field.typeOfMonetaryData}">
-                <input 
-                  type="text"  
-                  value="#{field.value}"
-                  style="width: 450px;"
-                  name="f#{field.id}"
-                  id="f#{field.id}"/>
+              <input 
+                type="text"  
+                value="#{field.value}"
+                style="width: 450px;"
+                name="f#{field.id}"
+                id="f#{field.id}"/>
             </h:panelGroup>
         </div>
       </div>
     </ui:repeat>
-    <div class="flex-div" style="gap: 15px !important;">
-      <div>
-        <p:commandButton
-          styleClass="ui-button-secondary"
-          action="#{formDataBean.onClickBtSalvar}"
-          oncomplete="PF('dlgSuccess').show();" 
-          value="Salvar"
-          ajax="false"/>
-      </div>
-      <div>
-        <p:commandButton
-          styleClass="ui-button-secondary"
-          action="#{formDataBean.onClickBtPesquisar}"
-          value="Pesquisar"
-          ajax="false"/>
-      </div>
-      <div>
-        <a onclick="onClickBtLimpar(); return false;"
-           href="#">
-          <p:button
-            styleClass="ui-button-secondary"
-            onclick="return false;"
-            value="Limpar"/>
-        </a>
-      </div>
-    </div>
+
+    <ui:include src="include-button-bar.xhtml" />
 
     <ui:include src="include-table.xhtml" />
 
   </div>
 
-  <p:dialog 
-      header="Dados do Cadastro"  
-      widgetVar="dlgSuccess"
-      showEffect="fade" 
-      style="width: 25rem;"
-      modal="true">
-    <div>
-        <span class="p-text-secondary block mb-8">
-            Dados salvos com sucesso!
-        </span>
-    </div>
-    <div style="text-align:right; margin-top:15px;">
-        <a onclick="PF('dlgSuccess').hide(); return false;"
-           href="#">
-          <p:button
-            styleClass="ui-button-success"
-            onclick="return false;"
-            value="OK"/>
-        </a>
-    </div>
-  </p:dialog>  
+  <ui:include src="include-dialogs.xhtml" />
 
 </ui:define>
 </ui:composition>

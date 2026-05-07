@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import appbuilder.core.data.FormRegisterDTO;
 import appbuilder.core.entity.FieldValue;
 import webappbuilder.webappfaces.data.dto.FormRegisterDTOWrapper;
+import webappbuilder.webappfaces.data.dto.SumValueDTO;
 import webappbuilder.webappfaces.data.mapper.FieldWrapperMapper;
 import webappbuilder.webappfaces.repository.FieldValueWebRepository;
 import webappbuilder.webappfaces.repository.FormRegisterWebRepository;
@@ -31,10 +32,24 @@ public class FormRegisterService {
     }
 
     @Transactional
+    public List<FormRegisterDTOWrapper> findByFormRegisterValues(
+            FormRegisterDTO register,
+            List<SumValueDTO>sumValues
+        ) {
+        sumValues.forEach(sumValue -> {
+            repository.findByFieldTotalValue(sumValue);
+        });
+        
+        return new FieldWrapperMapper().toDTOList(
+                repository.findByFormRegisterValues(register)
+            );
+    }
+
+    @Transactional
     public List<FormRegisterDTOWrapper> findByFormRegisterValues(FormRegisterDTO register) {
         return new FieldWrapperMapper().toDTOList(
-                  repository.findByFormRegisterValues(register)
-               );
+                repository.findByFormRegisterValues(register)
+            );
     }
 
 

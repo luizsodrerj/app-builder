@@ -20,17 +20,24 @@
             #{field.label}
         </label>
         <div>
-            <h:panelGroup rendered="#{field.typeOfMonetaryData}">
+            <h:panelGroup 
+              rendered="#{field.typeOfMonetaryData}">
               <input 
                 type="text"  
                 value="#{field.value}"
                 name="f#{field.id}"
                 id="f#{field.id}"
                 class="money"/>
-              <input name="total-field-#{field.id}"
-                     style="margin-left: 15px;"
-                     type="checkbox"
-                     value="true"/>
+              <span style="margin-left:10px; display:inline-block; gap:5px;">
+                <input name="total-field-#{field.id}"
+                      id="total-field-#{field.id}" 
+                      class="form-check-input"
+                      type="checkbox"
+                      value="true"/>
+                <span style="margin-left:3px;">
+                  Totalizar este campo ao Pesquisar
+                </span>
+              </span>  
             </h:panelGroup>
             <h:panelGroup rendered="#{not field.typeOfMonetaryData}">
               <input 
@@ -51,6 +58,8 @@
   </div>
 
   <ui:include src="include-dialogs.xhtml" />
+
+  <ui:include src="include-export-data.xhtml" />
 
 </ui:define>
 </ui:composition>

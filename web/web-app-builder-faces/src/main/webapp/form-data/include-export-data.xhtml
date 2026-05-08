@@ -1,0 +1,42 @@
+<ui:composition 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+  <h:head></h:head>		
+  
+  <p:dialog 
+      header="Dados Retornados da Pesquisa"  
+      widgetVar="dlgExportData"
+      showEffect="fade" 
+      style="width: 420rem;"
+      modal="true">
+    <div id="parent" style="width: 1045px;">
+      <div>
+        <div style="margin-top:15px;">
+          <p:button
+            styleClass="rounded-button ui-button-danger ui-button-outlined"
+            icon="pi pi-file-pdf"/>
+          Exportar para PDF
+            <span style="margin-left: 15px;"></span>
+          <p:button
+            styleClass="rounded-button ui-button-success ui-button-outlined"
+            icon="pi pi-file-excel"/>
+          Exportar para Excel
+        </div>  
+      </div>
+      <div style="text-align:right; margin-top:15px;">
+        <a  onclick="PF('dlgExportData').hide(); return false;"
+            href="#">
+          <p:button
+            styleClass="ui-button-success"
+            onclick="return false;"
+            value="Fechar"/>
+        </a>
+      </div>
+    </div>    
+  </p:dialog>  
+
+
+</ui:composition>  

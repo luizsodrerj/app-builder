@@ -2,6 +2,8 @@ package webappbuilder.webappfaces.view.helper;
 
 import java.util.List;
 
+import org.primefaces.PrimeFaces;
+
 import appbuilder.core.data.FieldValueDTO;
 import appbuilder.core.data.FormRegisterDTO;
 import webappbuilder.webappfaces.data.dto.FieldDTOWrapper;
@@ -13,34 +15,38 @@ import webappbuilder.webappfaces.view.bean.FormDataBean;
 
 public class FormDataBeanViewHelper {
 
-    public List<FormRegisterDTOWrapper>findByFormRegisterValues(
-            FormRegisterService service,
-            List<FieldValueDTO>values,
-            FormDataBean dataBean
-        ) {
-        return  !dataBean.getSumValuesList().isEmpty() ?
-                service.findByFormRegisterValues(
-                    new FormRegisterDTO(
-                        null,
-                        values,
-                        dataBean.getForm().getId()
-                    ),
-                    dataBean.getSumValuesList()
-                ) :
-                service.findByFormRegisterValues(
-                    new FormRegisterDTO(
-                        null,
-                        values,
-                        dataBean.getForm().getId()
-                    )
-                );
+    private FormRegisterService formRegisterService; 
+    private FormDataBean dataBean;
+
+
+    public FormDataBeanViewHelper(FormDataBean dataBean) {
+        this.formRegisterService = dataBean.getFormRegisterService();
+        this.dataBean = dataBean;
+    }
+ 
+    public void exportData() {
+        PrimeFaces.current().executeScript("PF('dlgExportData').show();");
     }
 
-    public void populateSumValues(FormDataBean dataBean,List<FieldValueDTO>values) {
+    public List<FormRegisterDTOWrapper>findByFormRegisterValues(
+            FormRegisterService service,
+            List<FieldValueDTO>values
+        ) {
+        FormRegisterDTO register = new FormRegisterDTO(null,values,dataBean.getForm().getId());
+            
+        return  !dataBean.getSumValuesList().isEmpty() ?
+                service.findByFormRegisterValues(
+                    register,
+                    dataBean.getSumValuesList()
+                ) :
+                service.findByFormRegisterValues(register);
+    }
+
+    public void populateSumValues(List<FieldValueDTO>values) {
         List<SumValueDTO>sumValuesList = dataBean.getSumValuesList();
         List<FieldDTOWrapper>fields = dataBean.getFields();
         sumValuesList.clear();
-
+ 
         if (!values.isEmpty()) {
             fields.forEach(field -> { 
                 String totValue    = FacesUtil.getParameter("total-field-"+field.getId());

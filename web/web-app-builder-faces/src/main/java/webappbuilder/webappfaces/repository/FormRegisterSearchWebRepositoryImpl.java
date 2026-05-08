@@ -45,7 +45,7 @@ public class FormRegisterSearchWebRepositoryImpl implements FormRegisterSearchWe
         );
         Query query = entityManager.createQuery(mainSql.toString());
         JPAUtil.setQueryParams(query, params);
-        sumValue.setTotalValue((BigDecimal)query.getSingleResult());
+        sumValue.setTotalValue(new BigDecimal((Double)query.getSingleResult()));
 
         return sumValue;
     }

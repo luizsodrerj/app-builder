@@ -8,21 +8,28 @@
   
   <div class="flex-div" style="gap: 15px !important;">
     <div>
-    <p:commandButton
+      <p:commandButton
         styleClass="ui-button-secondary"
         action="#{formDataBean.onClickBtSalvar}"
         value="Salvar"
         ajax="false"/>
     </div>
     <div>
-    <p:commandButton
+      <p:commandButton
         styleClass="ui-button-secondary"
         action="#{formDataBean.onClickBtPesquisar}"
         value="Pesquisar"
         ajax="false"/>
     </div>
     <div>
-    <p:commandButton
+      <p:commandButton
+        styleClass="ui-button-secondary"
+        action="#{formDataBean.onClickBtExportData}"
+        value="Pesquisar e Exportar Dados"
+        ajax="false"/>
+    </div>
+    <div>
+      <p:commandButton
         styleClass="ui-button-secondary"
         action="#{formDataBean.onClickBtLimpar}"
         value="Limpar"

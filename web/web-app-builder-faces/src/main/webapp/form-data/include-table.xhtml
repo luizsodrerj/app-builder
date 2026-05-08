@@ -8,12 +8,8 @@
   <div style="margin-top: 25px;">
 
     <h:panelGroup rendered="#{not empty formDataBean.registers}">
-      <div style="text-align:right;">
-        <span style="font-weight: bold;">
-          Total Valor: 50,00
-        </span>
-        <span style="margin-right: 60px;"></span>
-      </div>
+
+      <ui:include src="include-total.xhtml"/>
       <p:dataTable  selection="#{formDataBean.selectedRegister}" 
                     selectionMode="single"
                     allowUnsorting="true" 
@@ -24,14 +20,18 @@
         <p:ajax listener="#{formDataBean.onRowSelect}"
                 event="rowSelect" />
         <p:columns  headerText="#{column}"
-                    value="#{formDataBean.columns}" 
-                    var="column"
                     sortBy="#{register.values[colIndex].value}"
-                    columnIndexVar="colIndex">
+                    columnIndexVar="colIndex"
+                    value="#{formDataBean.columns}" 
+                    var="column">
             <h:outputText 
                 value="#{register.values[colIndex].value}"/>
         </p:columns>
       </p:dataTable>
+      <ui:include src="include-total.xhtml"/>
+      
+      <div style="margin-bottom: 25px;"></div>
+
     </h:panelGroup>
 	
   </div>

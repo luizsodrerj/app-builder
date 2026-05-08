@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import appbuilder.core.data.FieldValueDTO;
+import framework.util.FormatNumberUtil;
 
 public class SumValueDTO {
 
@@ -40,8 +41,13 @@ public class SumValueDTO {
     public void setTotalValue(BigDecimal totalValue) {
         this.totalValue = totalValue;
     }
-    public BigDecimal getTotalValue() {
-        return totalValue;
+    public String getTotalValue() {
+        return  totalValue != null ?
+                FormatNumberUtil.format(
+                    totalValue, 
+                    FormatNumberUtil.DUAS_CASAS_DECIMAIS
+                ) : 
+                "";
     }
 
     public String getLabel() {
